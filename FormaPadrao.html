@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="author" content="Manu e Paulo">
+        <meta nam5e="description" content="Resolucao do trabalho 1 - Pesquisa Operacional">
+        <link rel="stylesheet" type="text/css" href="FormaPadrao.css" media="screen" />
+        <title>Conversor Forma Padrão</title>
+    </head>
+
+
+    <body>
+        <!-- C A B E Ç A L H O ------------------------------------ -->
+        <header>
+            <div class="cabecalho">
+                <img src="Logo.png" width="100px" alt="Foto cabecalho">
+
+                <div class="titulos">
+                    <h1>Conversor Forma Padrão</h1>
+                    <p class="subTitulo">Calculadora de otimização linear</p>
+                </div>
+                
+                <div class="creditos">
+                    <p>Feito por:</p>
+                    <p>Manu e Paulo</p>
+                </div>
+            </div>
+        </header>
+
+
+        <!-- C O R P O ------------------------------------------ -->
+        <div class="pagina">
+
+            <!-- Parte de Inserção -->
+            <div class="formulario">
+                <form action="" name="formName" id="formName">
+                    <fieldset id="Campo1">
+                        <legend> Número de variáveis </legend>
+                        <label for="NumVar">
+                            <select id="NumVar" name="NumVar" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
+                                <option value="NumVar2">2</option>
+                                <option value="NumVar3">3</option>
+                                <option value="NumVar4">4</option>
+                                <option value="NumVar5">5</option>
+                                <option value="NumVar6">6</option>
+                                <option value="NumVar7">7</option>
+                                <option value="NumVar8">8</option>
+                            </select>
+                        </label>
+                    </fieldset>
+
+                    <fieldset id="Campo2">
+                        <legend> Função Objetivo </legend>
+                        <label for="FuncObj">
+                            <input type="text" id="FuncObj" name="FuncObj" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
+                        </label>
+                    </fieldset>
+
+                    <fieldset id="Campo3">
+                        <legend> Restrições </legend>
+                        <label for="Restrc">
+                            <input type="date" id="Restrc" name="Restrc" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
+                        </label>
+                    </fieldset>
+
+                    <fieldset id="4">
+                        <legend> Ano de Ingresso </legend>
+                        <label for="ingresso">
+                            <input type="number" min="1986" max="2019" id="ingresso" name="ingresso" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
+                        </label>
+                    </fieldset>
+
+                    <input type="submit" class="botao" id="botao" value="Converter!">
+                </form>
+            </div>
+
+
+            <!-- Resultado -->
+            <div class="resultado">
+                <p>Teste</p>
+            </div>
+        </div>
+    </body>
+
+    <script type="text/javascript" src="FormaPAdrao.js"></script>
+</html>
