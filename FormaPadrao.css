@@ -54,6 +54,8 @@ img{
 .titulos{
     position: relative;
     align-self: center;
+
+    line-height: 0px;
 }
 .titulos h1{
     font-size: xx-large;
@@ -61,6 +63,7 @@ img{
     margin-left: 10px;
     padding-left: -20px;
     padding-right: 70px;
+    padding-bottom: 14px;
 
     border-bottom: solid;
 }
@@ -68,6 +71,7 @@ img{
     font-size: medium;
 
     margin-left: 10px;
+    margin-top: -4.6px;
 }
 
 
