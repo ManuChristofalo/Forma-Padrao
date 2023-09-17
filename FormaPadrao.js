@@ -122,3 +122,55 @@ function handleFocus(input){
 }
 
 document.getElementById('botao').onclick = FormularioEnviado;
+
+
+/*  PLANEJAMENTO
+  1. SELECIONAR o NUMERO DE VARIAVEIS
+
+  2. ADICIONAR UM CAMPO DE TEXTO PARA CADA VARIAVEL
+
+  3. CRIAR um BOTAO para ir ADICIONANDO LINHAS DE RESTRICOES
+*/
+
+/* FUNCAO APRA ADICIONAR VARIAVEIS*/
+
+// Função que sera executada quando o botao for clicado
+function adicionarInput() {
+  // Crie um novo elemento de entrada (input)
+  var novoInput = document.createElement("input");
+  
+  // Definindo os atributos do input (<input type="text" id="restrc">)
+  novoInput.type = "text";
+  novoInput.id = "restrc";
+  
+  // Adicione o novo input ao elemento de container
+  var inputContainer = document.getElementById("campo-variavel");
+  inputContainer.appendChild(novoInput);
+}
+
+/* FUNCAO PARA ADICIONAR LINHAS DE RESTRICOES*/
+
+// Adicione um ouvinte de evento ao botão para acionar a função quando ele for clicado
+var botaoAddVar = document.getElementById("adicionarInput");
+botaoAddVar.addEventListener("click", adicionarInput);
+
+// Função para adicionar uma linha
+function adicionarLinha() {
+  const container = document.getElementById('containerRestricoes');
+
+  // Criar uma nova linha
+  const novaLinha = document.createElement('div');
+  novaLinha.classList.add('linha'); /* (<div class = "linha">) */
+
+  // Criando os inputs nas novas linhas
+  const input1 = document.createElement('input');
+  input1.setAttribute('type', 'text');
+
+  // Adicionar os inputs a nova linha
+  novaLinha.appendChild(input1);
+
+  // Adicionando a linha dentro da div que contém todas as linhas
+  container.appendChild(novaLinha);
+}
+const botaoAdicionar = document.getElementById('adicionarRestc');
+    botaoAdicionar.addEventListener('click', adicionarLinha);
