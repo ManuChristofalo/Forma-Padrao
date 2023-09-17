@@ -1,0 +1,11 @@
+O que ainda falta:
+1. Fazer as restrições e função objetivo dinâmicos, com o número de X's baseado
+no número de variáveis
+
+2. Configurar os campos para receber os dados;
+
+3. A partir do recebimento dos dados, converter para a Forma Padrão;
+
+4. Enviar de volta para o HTML e printar;
+
+5. Formatação bonitinha.

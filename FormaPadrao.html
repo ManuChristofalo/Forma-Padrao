@@ -28,76 +28,86 @@
         </header>
 
 
+
         <!-- C O R P O ------------------------------------------ -->
         <div class="pagina">
 
-            <!-- Parte de Inserção -->
+            <!-- INSERÇÃO -->
             <div class="formulario">
                 <form action="" name="formName" id="formName">
+
+                    <!-- I. Número de Variáveis -->
                     <fieldset id="Campo1">
-                        <legend> Número de variáveis </legend>
+                        <legend> Número de variáveis (1 - 5) </legend>
+
                         <label for="NumVar">
-                            <select id="NumVar" name="NumVar" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
-                                <option value="NumVar2">2</option>
-                                <option value="NumVar3">3</option>
-                                <option value="NumVar4">4</option>
-                                <option value="NumVar5">5</option>
-                                <option value="NumVar6">6</option>
-                                <option value="NumVar7">7</option>
-                                <option value="NumVar8">8</option>
-                            </select>
+                            <input type="number" class="NumVar" id="numVariables" min="1" max="5" placeholder="NumVar" required>
                         </label>
                     </fieldset>
 
+
+                    <!-- II. Função objetivo -->
                     <fieldset id="Campo2">
                         <legend> Função Objetivo </legend>
+
                         <label for="FuncObj">
-                            <input type="text" id="FuncObj" name="FuncObj" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
+                            <input type="text" class="coeff">x1 +&nbsp;
+                            <input type="text" class="coeff">x2&nbsp;
+                            <!-- Fazer código para mudar de acordo com o num de variáveis -->
+                            
+                            &nbsp; = &nbsp;
+
+                            <input type="text" class="result" placeholder="Resultado">
                         </label>
                     </fieldset>
 
-                    <fieldset id="Campo3">
+
+                    <!-- III. Restrições -->
+                    <fieldset class="CampoRestr" id="Campo3">
                         <legend> Restrições </legend>
-                        <label for="Restrc">
-                            <input type="date" id="Restrc" name="Restrc" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
-                        </label>
+
+                        <div id="CampoRestr">
+                                <label for="Restrc">
+                                    <div class="linha">
+                                        <input type="text" class="coeff">x1 +&nbsp;
+                                        <input type="text" class="coeff">x2&nbsp;
+                                        <!-- Fazer código para mudar de acordo com o num de variáveis -->
+
+                                        &nbsp;
+                                        <select class="eq">
+                                            <option value="=">=</option>
+                                            <option value="<"><</option>
+                                            <option value="<=">≤</option>
+                                            <option value=">">></option>
+                                            <option value=">=">≥</option>
+                                        </select>
+                                        &nbsp;
+
+                                        <input type="text" class="result" placeholder="Resultado">
+                                    </div>
+                                </label>
+                        </div>
+
+                        <br><br><button type="button" onclick="adicionaRestricao()">Adicionar Nova Restrição</button><br><br>
                     </fieldset>
 
-                <!-- O PAULO ESTA MEXENDO AQUI -->
 
-                <!-- Aqui vamos adicionar os inputs dinamicamente -->
-
-                    <div class="guardaTudo">
-                        <!-- Botao para adicionar variaveis -->
-                        <div class="btnAddVar">
-                            <button id="adicionarInput" style="margin-left: 10px;">Adicionar Variavel</button>
-                        </div>
-
-                        <div class="campo-variavel" id="campo-variavel">
-                            <input type="text" id="restrc">
-                        </div>
-                    
-                        <!-- Botao para adicionar restricoes -->
-                        <!-- Aqui, você pode adicionar mais restricoes, se desejar -->                    
-                        <div id="containerRestricoes">
-                            <button id="adicionarRestc">Adicionar Restricao</button>
-                        </div>
-                    </div>
-
-                <!-- O PAULO ESTA MEXENDO AQUI -->
-                    
+                    <!-- Botão de Envio -->
                     <input type="submit" class="botao" id="botao" value="Converter!">
                 </form>
             </div>
+            <!-- FINAL DO FORMULÁRIO -->
 
 
-
-            <!-- Resultado -->
+            <!-- RESULTADO -->
             <div class="resultado">
                 <p>Teste</p>
             </div>
+
+
+            <!-- FINAL DA PÁGINA -->
         </div>
     </body>
 
-    <script type="text/javascript" src="FormaPAdrao.js"></script>
+    <script type="text/javascript" src="FormaPadrao.js"></script>
 </html>
