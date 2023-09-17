@@ -63,16 +63,33 @@
                         </label>
                     </fieldset>
 
-                    <fieldset id="4">
-                        <legend> Ano de Ingresso </legend>
-                        <label for="ingresso">
-                            <input type="number" min="1986" max="2019" id="ingresso" name="ingresso" onfocus="handleFocus(this)" onblur="handleBlur(this)" required>
-                        </label>
-                    </fieldset>
+                <!-- O PAULO ESTA MEXENDO AQUI -->
 
+                <!-- Aqui vamos adicionar os inputs dinamicamente -->
+
+                    <div class="guardaTudo">
+                        <!-- Botao para adicionar variaveis -->
+                        <div class="btnAddVar">
+                            <button id="adicionarInput" style="margin-left: 10px;">Adicionar Variavel</button>
+                        </div>
+
+                        <div class="campo-variavel" id="campo-variavel">
+                            <input type="text" id="restrc">
+                        </div>
+                    
+                        <!-- Botao para adicionar restricoes -->
+                        <!-- Aqui, você pode adicionar mais restricoes, se desejar -->                    
+                        <div id="containerRestricoes">
+                            <button id="adicionarRestc">Adicionar Restricao</button>
+                        </div>
+                    </div>
+
+                <!-- O PAULO ESTA MEXENDO AQUI -->
+                    
                     <input type="submit" class="botao" id="botao" value="Converter!">
                 </form>
             </div>
+
 
 
             <!-- Resultado -->
