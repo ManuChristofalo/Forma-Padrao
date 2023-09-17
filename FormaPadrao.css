@@ -54,8 +54,6 @@ img{
 .titulos{
     position: relative;
     align-self: center;
-
-    line-height: 0px;
 }
 .titulos h1{
     font-size: xx-large;
@@ -63,7 +61,6 @@ img{
     margin-left: 10px;
     padding-left: -20px;
     padding-right: 70px;
-    padding-bottom: 14px;
 
     border-bottom: solid;
 }
@@ -71,7 +68,6 @@ img{
     font-size: medium;
 
     margin-left: 10px;
-    margin-top: -4.6px;
 }
 
 
@@ -132,15 +128,16 @@ legend{
 }
 
 label{
-    color: rgb(105, 105, 105);
+    color: rgb(0, 0, 0);;
 }
 
 form input{
-    min-width: 365px;
-    height: max-content;
+    width: 125px;
+    height: 30px;
     outline: none;
-    color: rgb(105, 105, 105);
-    background-color: ghostwhite;
+    color: rgb(0, 0, 0);
+    background-color: #ECC1A1;
+    color: white;
     border: 0px;
     border-radius: 8px;
 }
@@ -153,7 +150,7 @@ textarea{
     max-height: 100px;
     min-height: 100px;
     outline: none;
-    color: rgb(105, 105, 105);
+    color: rgb(0, 0, 0);
     background-color: ghostwhite;
     border: 0px;
     border-radius: 8px;
@@ -200,4 +197,37 @@ footer{
 .resultado{
     height: 100%;
     width: 100%;
+}
+
+
+.guardaTudo{
+    width: 100%;
+    height: 300px;
+    border: 2px solid #58626C;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+
+#containerRestricoes{
+    display: flex;
+    width: 100%;
+    height: 200px;
+    flex-direction: column;
+    margin-left: 10px;
+    align-items: start;
+    border-color: #58626C;
+    border-radius: 10px;
+}
+
+.linha{
+    margin-top: 5px;
+}
+
+#restrc{
+    margin-left: 10px;
 }
