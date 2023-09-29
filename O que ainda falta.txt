@@ -1,10 +1,12 @@
 O que ainda falta:
-1. Fazer as restrições e função objetivo dinâmicos, com o número de X's baseado
-no número de variáveis
+1. Configurar os campos para receber os dados;
+    Ideia da Manu para isso - fazer uma matriz para armazenar os coeficientes.
+    Cada sinal da equação (=, <, >, <=, >=) tem um valor, também armazenado na matriz, na coluna j-1.
+    O resultado também fica na matriz, na coluna j.
 
-2. Configurar os campos para receber os dados;
+2. A partir do recebimento dos dados, converter para a Forma Padrão;
 
-3. A partir do recebimento dos dados, converter para a Forma Padrão;
+3. Simplex
 
 4. Enviar de volta para o HTML e printar;
 
