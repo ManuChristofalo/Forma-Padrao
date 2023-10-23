@@ -91,7 +91,7 @@ function adicionaRestricao(){
     // II. Seleção do tipo de equação
         const select = document.createElement('select');
         select.className = 'sinalEq';
-        const options = ['=', '<', '≤', '>', '≥'];
+        const options = ['=', '≤', '≥'];
 
         for(let k = 0; k < options.length; k++){
             const option = document.createElement('option');

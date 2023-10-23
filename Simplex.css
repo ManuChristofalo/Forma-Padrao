@@ -193,21 +193,16 @@ form input{
 }
 
 
-.sinalEq{ /* --> Formatação para a caixa de seleção do sinal usado na equação (=, >, <, etc) */
+.sinalEq, .minMax{ /* --> Formatação para a caixa de seleção do sinal usado na equação (=, >, <, etc) */
     border-color: rgb(184, 182, 182);
     background-color: ghostwhite;
     color: rgb(97, 97, 97);
 }
 
 
-.minMax{ /* --> Formatação da caixa de seleção maximizar ou minimizar */
-    width: 75px;
-    border: solid;
-    border-width: 1px;
-    border-color: rgb(97, 97, 97);
-    background-color: white;
-    text-align: center;
-}
+ .minMax{  /*-> Formatação da caixa de seleção maximizar ou minimizar  */
+    margin-right: 20px;
+} 
 
 
 .resultadoSimplex{ /* --> Formatação do resultado final */
