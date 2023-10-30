@@ -1,0 +1,55 @@
+// 5. PIVOTAMENTO =========================================================================================================
+function pivotamento(){
+    let menorNegativo;
+    let columnResult;
+    let pivo;
+    let colunaPivo = 0;
+    let linhaPivo = 0;
+    //verifica o menor valor negativo da linha CUSTO REDUZIDO
+    for (let i = lastLine; i < array.length; i++) {
+        for (let j = 0; j < array.length; j++){
+            menorNegativo = Math.min.apply(linhaCR[j]);
+            colunaPivo++;
+            console.log(menorNegativo);
+        }
+    }
+    //se não tiver nenhum valor negativo, o algorithm termina
+    if(menorNegativo >= 0){
+        return;
+    }
+
+    //dividir o valor da coluna [resultado] pelo valor da coluna [menorNegativo] - para achar o pivo
+    for(let j = columnResult; j <= columnResult; j++){
+        for(let i = 0; i < array.length; i++){
+            if((array[i][j]/array[i][menorNegativo]) < 0)
+                return;
+            else{
+                pivo = Math.min.apply(array[i][j] / array[i][menorNegativo]);
+                linhaPivo++;
+            }
+        }
+    }
+    
+    //zerar os valores da coluna do pivo
+    for(let i = 0; i < array.length; i++){
+        for(let j = 0; j < array.length; j++){
+            if(linhaPivo === i){
+                array[i][j] = array[i][j] / pivo;
+            }
+            if(linhaPivo !== i){
+                array[i][j] = array[i][j] - (array[i][colunaPivo]/pivo) * array[linhaPivo][j];
+            }
+        }
+    }
+    //mudar os valores que saem da base e os que entram
+    array[linhaPivo][0] = array[0][colunaPivo];
+}
+
+// 6. CALCULAR O Z ========================================================================================================
+function calcularZ(){
+    let z = 0;
+    for(let i = 0; i < array.length; i++){
+        z += array[i][0] * array[i][columnResult];
+    }
+    return z;
+}
