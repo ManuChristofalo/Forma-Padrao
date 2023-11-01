@@ -1,14 +1,4 @@
 O que ainda falta:
-1. Com os campos já configurados e os dados já armazenados, passar o que foi recebido e previamente alocado em vetor/matriz
-auxiliar, para uma "Matriz Forma Padrão" organizada, que contem na forma padrão:
-    a) Na primeira linha, a função objetivo
-    b) Nas outras linhas, as restrições
-(IMPRIMIR ESSA MATRIZ NA INTERFACE DO USUÁRIO DPS)
+1. Exibir resultado
 
-2. Essa matriz será a matriz base pré-simplex. Seus valores são copiados para uma matriz em que o Simplex será efetivamente executado.
-
-3. Simplex
-
-4. Enviar de volta para o HTML e printar;
-
-5. Formatação bonitinha.
+2. Formatação bonitinha.

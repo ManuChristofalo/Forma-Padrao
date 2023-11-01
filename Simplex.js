@@ -2,9 +2,14 @@
 // 1. MUDANÇA NO NÚMERO DE VARIÁVEIS =======================================================================================
 var numRestr=1;
 var numVariaveis=2;
+let matrizPadrao = [];
+let matrizOperacao = [];
+
 
 document.getElementById('numVariaveis').addEventListener('change', atualizaCampos);
 atualizaCampos();
+
+
 
 function atualizaCampos(){
     document.getElementById('funcaoObjetivo').innerHTML = ''; //Limpeza dos campos a cada alteração
@@ -132,6 +137,8 @@ const vetorObjetivo = []; //Bool Min/Max - Coef. Variaveis - Resultado
 let matrizRestricao =[]; //Coef. Variaveis - Resultado - Sinal (*numRestrições)
 
 
+
+
 function salvaValor(){
     //3.1 - FUNÇÃO OBJETIVO ---------------------------------------------------------------
     const numVariaveis = parseInt(document.getElementById('numVariaveis').value);
@@ -179,27 +186,45 @@ function salvaValor(){
     }
 
     criaMatrizFormaPadrao();
-    //Call Funções Simplex
+    console.log("\nCalculando simplex...")
+    let resultadoSimplex=0;
+    let count=0;
+    while(resultadoSimplex===0){
+        count++;
+        resultadoSimplex=pivotamento();
+        console.log("Simplex - Iteracao " + count);
+        for(let linha=0; linha<numRestr+2; linha++){
+            var array=[];
+            for(let coluna=0; coluna<numVariaveis+(numRestr*2)+2; coluna++){
+                array[coluna]=matrizOperacao[linha][coluna];
+            }
+            var str=array.join(' ');
+            console.log(str);
+        }
+    }
+
+    if(resultadoSimplex===-1) console.log("Erro de Simplex");
+    else if(resultadoSimplex===2) console.log("Simplex impossível (sem solução)");
+    else if(resultadoSimplex===3) console.log("Solução ilimitada/infinita");
+    else if(resultadoSimplex===4) console.log("Múltiplas soluções");
+    else if(resultadoSimplex===1) console.log("Simplex com solução unica!");
 }
 
 
 
-//4. SIMPLEX ========================================================================================================================
+//4. FORMA PADRÃO ========================================================================================================================
 
 function criaMatrizFormaPadrao(){
-    //I. Criação da matriz já na forma padrão (tablo) - ver anexo matrizPadrao.png
-    let matrizPadrao = [];
+    //I. Preenchimento da matriz padrão
     for(let linha=0; linha<numRestr+2; linha++){ //num linhas -> num restrição + func. obj + CRs
         matrizPadrao[linha]=new Array(numVariaveis+(2*numRestr)+2); //num colunas -> bases + num variaveis + variaveis auxiliares + resultado
     }
-
+    
     for(let linha=0; linha<numRestr+2; linha++){
         for(let coluna=0; coluna<numVariaveis+(numRestr*2)+2; coluna++){
             matrizPadrao[linha][coluna]=0;
         }
     }
-
-    //II. Preenchimento da matriz padrão
     //Linha 0 - Função Objetivo
     for(let coluna=1; coluna<=numVariaveis; coluna++){ //Variáveis normais
         if(vetorObjetivo[0]===1)
@@ -210,7 +235,6 @@ function criaMatrizFormaPadrao(){
 
     let restricao=0;
     for(let coluna=numVariaveis+1; coluna<numVariaveis+(numRestr*2)+1; coluna++){ //Variáveis de ajuste
-        console.log(matrizRestricao[restricao][numVariaveis+1]);
         if(matrizRestricao[restricao][numVariaveis+1]===-1){ //Se a restrição for <=
             matrizPadrao[0][coluna]=0;
             coluna++;
@@ -228,7 +252,7 @@ function criaMatrizFormaPadrao(){
     //Linha 2 até i-1 - Restrições
     for(let linha=1; linha<numRestr+1; linha++){
         for(let coluna=0; coluna<numVariaveis+(numRestr*2)+1; coluna++){
-            if(coluna==0){ //Coluna 0 - Valores das bases na f.obj. | Isso ta certo
+            if(coluna==0){ //Coluna 0 - Valores das bases na f.obj.
                 if(matrizRestricao[linha-1][numVariaveis+1]==-1){ //Se a restrição for <=
                     matrizPadrao[linha][0]=matrizPadrao[0][numVariaveis+2*linha-1];
                 }
@@ -250,23 +274,182 @@ function criaMatrizFormaPadrao(){
                 }
             }
 
-            else if(coluna>0 && coluna<=numVariaveis){ //Colunas var. normais | Isso ta certo
+            else if(coluna>0 && coluna<=numVariaveis){ //Colunas var. normais
                 matrizPadrao[linha][coluna]=matrizRestricao[linha-1][coluna-1];
             }
         }
     }
 
-    for(let linha=0; linha<numRestr+1; linha++){
+    //III. Coluna Resultado
+    for(let i=0; i<numRestr; i++){
+        matrizPadrao[i+1][numVariaveis+(2*numRestr)+1]=matrizRestricao[i][numVariaveis];
+    }
+
+    //IV. Linha Custo Reduzido (CR)
+    for(let coluna=1; coluna<numVariaveis+(numRestr*2)+1; coluna++){
+        let CRColuna=matrizPadrao[0][coluna];
+        for(let i=1; i<numRestr+1; i++){
+            CRColuna-=(matrizPadrao[i][coluna]*matrizPadrao[i][0]);
+        }
+        matrizPadrao[numRestr+1][coluna]=CRColuna;
+    }
+
+    //Imprime matriz simplex
+    console.log("Matriz antes do simplex:")
+    for(let linha=0; linha<numRestr+2; linha++){
         var array=[];
-        for(let coluna=0; coluna<numVariaveis+(numRestr*2)+1; coluna++){
+        for(let coluna=0; coluna<numVariaveis+(numRestr*2)+2; coluna++){
             array[coluna]=matrizPadrao[linha][coluna];
         }
         var str=array.join(' ');
         console.log(str);
     }
 
-    console.log("\n");
-    for(coluna=0; coluna<numVariaveis+(numRestr*2)+1; coluna++){
-        console.log(matrizPadrao[1][coluna]);
+    //Cria matriz de operação (espelho da padrão)
+    for(let linha=0; linha<numRestr+2; linha++){ //num linhas -> num restrição + func. obj + CRs
+        matrizOperacao[linha]=new Array(numVariaveis+(2*numRestr)+2); //num colunas -> bases + num variaveis + variaveis auxiliares + resultado
     }
+    
+    for(let linha=0; linha<numRestr+2; linha++){
+        for(let coluna=0; coluna<numVariaveis+(numRestr*2)+2; coluna++){
+            matrizOperacao[linha][coluna]=matrizPadrao[linha][coluna];
+        }
+    }
+}
+
+
+//5. SIMPLEX ========================================================================================================================
+
+//I. Pivotamento
+function pivotamento(){
+    /* Possíveis casos:
+        Return -1 | ERRO
+        Return 0 | Simplex não terminou
+        Return 1 | Solução única encontrada
+        Return 2 | Não existe solução
+        Return 3 | Solução ilimitada/infinita
+        Return 4 | Múltiplas soluções
+    */
+
+    console.log("\nCalculando pivotamento...")
+    let colunaResultado;
+    let menorNegativo;
+    let flagPositivo=0;
+    let flagExcesso=0;
+    let pivo=0;
+    let colunaPivo = 1;
+    let linhaPivo = 1;
+
+
+    //Verifica o menor valor negativo da linha CUSTO REDUZIDO
+    console.log("\nVerificando CR...")
+    menorNegativo=matrizPadrao[numRestr+1][1]
+    for(let j=2; j<numVariaveis+(numRestr*2)+1; j++){
+        if(matrizPadrao[numRestr+1][j]<menorNegativo){
+            menorNegativo = matrizPadrao[numRestr+1][j];
+            colunaPivo = j;
+        }
+    }
+    console.log("\nColuna Pivo = " + colunaPivo);
+
+    //Verifica se ainda há variável de excesso na base
+    for(let i=1; i<numRestr+1; i++){
+        if(matrizPadrao[i][0]===10000) flagExcesso=1;
+    }
+
+    //Se os CRs forem maior ou igual a zero (condição de parada)
+    if(menorNegativo>0){
+        if(flagExcesso===1) return 2; //CASO 2: SEM SOLUÇÃO
+        return 1; //CASO 1: SOLUÇÃO ÚNICA
+    }
+
+    else if(menorNegativo===0){
+        if(flagExcesso===1) return 2; //CASO 2: SEM SOLUÇÃO
+        return 4; //CASO 4: MÚLTIPLAS SOLUÇÕES
+    }
+
+    //Divide o valor da coluna [resultado] pelo valor da coluna [menorNegativo] - para achar o pivo
+    colunaResultado=numVariaveis+(2*numRestr)+1;
+    let menorPivo=99999999;
+    for(let i=1; i<numRestr+1; i++){
+        if(matrizPadrao[i][colunaPivo]===0) return -1; //CASO -1: ERRO FATAL
+        
+        if((matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo])>=0){
+            if(menorPivo>matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo]){
+                menorPivo = matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo];
+                pivo = matrizPadrao[i][colunaPivo];
+                linhaPivo = i;
+            }
+            flagPositivo=1;
+            console.log("Valor do pivo = " + pivo);
+        }
+    }
+    console.log("Linha pivo = " + linhaPivo);
+
+    if(flagPositivo===0){ //Se todas as colunas resultarem em uma divisão negativa
+        return 3; //CASO 3: SOLUÇÃO ILIMITADA
+    }
+    
+
+    //Pivotamento
+    for(let i = 1; i<numRestr+1; i++){
+        for(let j = 1; j <numVariaveis+(numRestr*2)+2; j++){
+            if(linhaPivo === i){
+                matrizOperacao[i][j] = matrizPadrao[i][j] / pivo;
+            }
+            if(linhaPivo !== i){
+                matrizOperacao[i][j] -=  ((matrizPadrao[i][colunaPivo]/pivo) * matrizPadrao[linhaPivo][j]);
+            }
+        }
+    }
+    
+    //Mudança de base
+    matrizOperacao[linhaPivo][0] = matrizOperacao[0][colunaPivo];
+
+    //Calcula os novos CRs
+    for(let coluna=1; coluna<numVariaveis+(numRestr*2)+1; coluna++){
+        let CRColuna=matrizOperacao[0][coluna];
+        for(let i=1; i<numRestr+1; i++){
+            CRColuna-=(matrizOperacao[i][coluna]*matrizOperacao[i][0]);
+        }
+        matrizOperacao[numRestr+1][coluna]=CRColuna;
+    }
+
+    //Calcula o resultado (z)
+    let z=0;
+    for(let i = 1; i < numRestr+1; i++){
+        z += matrizOperacao[i][0] * matrizOperacao[i][colunaResultado];
+    }
+    matrizOperacao[numRestr+1][numVariaveis+(numRestr*2)+1]=z;
+
+    //Atualiza a matriz base (matriz padrão)
+    for(let linha=0; linha<numRestr+2; linha++){
+        for(let coluna=0; coluna<numVariaveis+(numRestr*2)+2; coluna++){
+            matrizPadrao[linha][coluna]=matrizOperacao[linha][coluna];
+        }
+    }
+
+    //Verifica o menor valor negativo da linha CUSTO REDUZIDO
+    console.log("\nVerificando CR...")
+    menorNegativo=matrizPadrao[numRestr+1][1]
+    for(let j=2; j<numVariaveis+(numRestr*2)+1; j++){
+        if(matrizPadrao[numRestr+1][j]<menorNegativo){
+            menorNegativo = matrizPadrao[numRestr+1][j];
+            colunaPivo = j;
+        }
+    }
+
+    //Verifica se ainda há variável de excesso na base
+    for(let i=1; i<numRestr+1; i++){
+        if(matrizPadrao[i][0]===10000) flagExcesso=1;
+    }
+
+    //Se os CRs forem maior ou igual a zero (condição de parada)
+    if(menorNegativo>=0){
+        if(flagExcesso===1) return 2; //CASO 2: SEM SOLUÇÃO
+        return 1; //CASO 1: SOLUÇÃO ÚNICA
+    }
+
+
+    return 0; //CASO 0: O SIMPLEX NÃO TERMINOU
 }

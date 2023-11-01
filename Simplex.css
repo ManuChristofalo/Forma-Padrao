@@ -161,7 +161,7 @@ form input{
 
 
 .coeficiente{ /* --> Formatação do campo de inserção de todos os coeficientes */
-    width: 25px;
+    width: 75px;
     border: solid;
     border-width: 1px;
     border-color: rgb(122, 122, 122);
