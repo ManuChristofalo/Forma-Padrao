@@ -13,6 +13,7 @@ var numRestr=2;
 var numVariaveis=2;
 let matrizPadrao = [];
 let matrizOperacao = [];
+let variaveisBasicas = [];
 
 
 document.getElementById('numVariaveis').addEventListener('change', atualizaCampos);
@@ -402,7 +403,7 @@ function pivotamento(){
     let linhaPivo = 1;
 
 
-    /* //Verifica o menor valor negativo da linha CUSTO REDUZIDO
+     //Verifica o menor valor negativo da linha CUSTO REDUZIDO
     console.log("\nVerificando CR...")
     menorNegativo=matrizPadrao[numRestr+1][1]
     for(let j=2; j<numVariaveis+(numRestr*2)+1; j++){
@@ -420,14 +421,8 @@ function pivotamento(){
 
     //Se os CRs forem maior ou igual a zero (condição de parada)
     if(menorNegativo>0){
-        if(flagExcesso===1) return 2; //CASO 2: SEM SOLUÇÃO
         return 1; //CASO 1: SOLUÇÃO ÚNICA
     }
-
-    else if(menorNegativo===0){
-        if(flagExcesso===1) return 2; //CASO 2: SEM SOLUÇÃO
-        return 4; //CASO 4: MÚLTIPLAS SOLUÇÕES
-    } */
 
     //Divide o valor da coluna [resultado] pelo valor da coluna [menorNegativo] - para achar o pivo
     colunaResultado=numVariaveis+(2*numRestr)+1;
@@ -513,4 +508,13 @@ function pivotamento(){
 
 
     return 0; //CASO 0: O SIMPLEX NÃO TERMINOU
+}
+
+
+//6. IMPRESSÃO DO SIMPLEX ======================================================================================================================
+
+function imrpimeSimplex(){
+    const divResultado = document.getElementById("resultadoSimplex");
+
+    let resultado = matrizOperacao[numRestr+1][numVariaveis+(2*numRestr)]
 }
