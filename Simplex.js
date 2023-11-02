@@ -1,6 +1,15 @@
 
+let flagScroll=0;
+function pageScroll() {
+    window.scrollBy(0,4);
+    flagScroll++;
+    if(flagScroll<200) scrolldelay = setTimeout(pageScroll, 5);
+    return;
+}
+
+
 // 1. MUDANÇA NO NÚMERO DE VARIÁVEIS =======================================================================================
-var numRestr=1;
+var numRestr=2;
 var numVariaveis=2;
 let matrizPadrao = [];
 let matrizOperacao = [];
@@ -18,6 +27,7 @@ function atualizaCampos(){
     numRestr=0;
 
     adicionaObjetivo();
+    adicionaRestricao();
     adicionaRestricao();
 }
 
@@ -50,6 +60,7 @@ function adicionaObjetivo(){
             input.type = 'number';
             input.className = 'coeficiente';
             input.placeholder = `coef X${i}`;
+            input.required = true;
             document.getElementById('funcaoObjetivo').appendChild(input);
 
             if(i < numVariaveis){
@@ -61,7 +72,7 @@ function adicionaObjetivo(){
 }
 
 function removeRestricao(){
-    if(numRestr>1){
+    if(numRestr>2){
         const lastAddedDiv = document.getElementById('restricoes').lastElementChild;
         if(lastAddedDiv){
             lastAddedDiv.remove();
@@ -83,6 +94,7 @@ function adicionaRestricao(){
                 input.type = 'number';
                 input.className = 'coeficiente';
                 input.placeholder = `coef X${i}`;
+                input.required = true;
                 DivRestricao.appendChild(input);
     
                 if (i < numVariaveis){
@@ -121,6 +133,7 @@ function adicionaRestricao(){
             inputResultado.type = 'number';
             inputResultado.className = 'resultado';
             inputResultado.placeholder = 'Resultado';
+            inputResultado.required = true;
             DivRestricao.appendChild(inputResultado);
     
     
@@ -136,6 +149,46 @@ function adicionaRestricao(){
 const vetorObjetivo = []; //Bool Min/Max - Coef. Variaveis - Resultado
 let matrizRestricao =[]; //Coef. Variaveis - Resultado - Sinal (*numRestrições)
 
+
+function validaCampos() {
+    const numVariaveis = parseInt(document.getElementById('numVariaveis').value);
+    if (isNaN(numVariaveis) || numVariaveis < 2 || numVariaveis > 5) {
+        alert('Número de variáveis deve ser um valor entre 2 e 5.');
+        return;
+    }
+
+    // Verifique se todos os campos da função objetivo estão preenchidos
+    for (let i = 1; i <= numVariaveis; i++) {
+        const input = document.getElementById('funcObj' + i);
+        if (!input.value) {
+            alert('Preencha todos os campos da função objetivo.');
+            return;
+        }
+    }
+
+    // Verifique se todos os campos das restrições estão preenchidos
+    for (let i = 1; i <= numVariaveis; i++) {
+        for (let j = 1; j <= numRestr; j++) {
+            const input = document.getElementById('restrVar' + i + j);
+            if (!input.value) {
+                alert('Preencha todos os campos das restrições.');
+                return;
+            }
+        }
+    }
+
+    // Verifique se todos os campos dos resultados das restrições estão preenchidos
+    for (let i = 1; i <= numRestr; i++) {
+        const inputResultado = document.getElementById('restrResult' + i);
+        if (!inputResultado.value) {
+            alert('Preencha todos os campos dos resultados das restrições.');
+            return;
+        }
+    }
+
+    // Se todos os campos estiverem preenchidos, chame a função salvaValor
+    salvaValor();
+}
 
 
 
@@ -189,17 +242,22 @@ function salvaValor(){
     console.log("\nCalculando simplex...")
     let resultadoSimplex=0;
     let count=0;
-    while(resultadoSimplex===0){
+    while(resultadoSimplex===0 && count <20){
         count++;
-        resultadoSimplex=pivotamento();
-        console.log("Simplex - Iteracao " + count);
-        for(let linha=0; linha<numRestr+2; linha++){
-            var array=[];
-            for(let coluna=0; coluna<numVariaveis+(numRestr*2)+2; coluna++){
-                array[coluna]=matrizOperacao[linha][coluna];
+
+        if(count===21) console.log("Simplex impossível (sem solução)");
+
+        else{
+            resultadoSimplex=pivotamento();
+            console.log("Simplex - Iteracao " + count);
+            for(let linha=0; linha<numRestr+2; linha++){
+                var array=[];
+                for(let coluna=0; coluna<numVariaveis+(numRestr*2)+2; coluna++){
+                    array[coluna]=matrizOperacao[linha][coluna];
+                }
+                var str=array.join(' ');
+                console.log(str);
             }
-            var str=array.join(' ');
-            console.log(str);
         }
     }
 
@@ -208,6 +266,9 @@ function salvaValor(){
     else if(resultadoSimplex===3) console.log("Solução ilimitada/infinita");
     else if(resultadoSimplex===4) console.log("Múltiplas soluções");
     else if(resultadoSimplex===1) console.log("Simplex com solução unica!");
+
+    pageScroll();
+    flagScroll=0;
 }
 
 
@@ -341,7 +402,7 @@ function pivotamento(){
     let linhaPivo = 1;
 
 
-    //Verifica o menor valor negativo da linha CUSTO REDUZIDO
+    /* //Verifica o menor valor negativo da linha CUSTO REDUZIDO
     console.log("\nVerificando CR...")
     menorNegativo=matrizPadrao[numRestr+1][1]
     for(let j=2; j<numVariaveis+(numRestr*2)+1; j++){
@@ -366,22 +427,22 @@ function pivotamento(){
     else if(menorNegativo===0){
         if(flagExcesso===1) return 2; //CASO 2: SEM SOLUÇÃO
         return 4; //CASO 4: MÚLTIPLAS SOLUÇÕES
-    }
+    } */
 
     //Divide o valor da coluna [resultado] pelo valor da coluna [menorNegativo] - para achar o pivo
     colunaResultado=numVariaveis+(2*numRestr)+1;
     let menorPivo=99999999;
     for(let i=1; i<numRestr+1; i++){
-        if(matrizPadrao[i][colunaPivo]===0) return -1; //CASO -1: ERRO FATAL
-        
-        if((matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo])>=0){
-            if(menorPivo>matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo]){
-                menorPivo = matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo];
-                pivo = matrizPadrao[i][colunaPivo];
-                linhaPivo = i;
+        if(matrizPadrao[i][colunaPivo]!==0){
+            if((matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo])>=0){
+                if(menorPivo>matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo]){
+                    menorPivo = matrizPadrao[i][colunaResultado]/matrizPadrao[i][colunaPivo];
+                    pivo = matrizPadrao[i][colunaPivo];
+                    linhaPivo = i;
+                }
+                flagPositivo=1;
+                console.log("Valor do pivo = " + pivo);
             }
-            flagPositivo=1;
-            console.log("Valor do pivo = " + pivo);
         }
     }
     console.log("Linha pivo = " + linhaPivo);

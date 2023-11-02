@@ -1,4 +1,10 @@
 O que ainda falta:
-1. Exibir resultado
+1. Escrever uma função que seja capaz de armazenar os valores das variáveis básicas finais (x1, x2...), para que seja possível
+printá-los ao exibir o resultado (se houver uma única solução). IDEIA:
+	- Criar um vetor que representa as variáveis que estão na base. Esse vetor armazena as colunas na matriz padrão inicial das variáveis da base:
+	- Se essa coluna for um número menor que o número de variáveis, significa que ela é uma variável incial (x1, x2, x3).
+	- A coluna que ela está indica qual o número dessa variável (exemplo: j=1, então é o x1).
 
-2. Formatação bonitinha.
+2. Exibir resultado: z final (matriz[i][j]) e variáveis.
+
+3. Formatação bonitinha.
