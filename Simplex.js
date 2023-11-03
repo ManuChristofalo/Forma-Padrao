@@ -265,6 +265,7 @@ function salvaValor(){
         }
     }
 
+    let resultado = matrizPadrao[numRestr+1][numVariaveis+(2*numRestr)+1];
     const divResultado = document.createElement("div");
     const span = document.createElement('h2');
 
@@ -297,6 +298,8 @@ function salvaValor(){
         imprimeSimplex();
     }
 
+    document.getElementById("resultadoSimplex").appendChild(divResultado);
+    document.getElementById("resultadoSimplex").hidden=false;
     pageScroll();
     flagScroll=0;
 }
