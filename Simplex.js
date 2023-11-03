@@ -621,6 +621,6 @@ function refreshPage(){
     vetorBase.length=0;
     vetorObjetivo.length=0; //Bool Min/Max - Coef. Variaveis - Resultado
     matrizRestricao.length=0; //Coef. Variaveis - Resultado - Sinal (*numRestrições)
-    clear();
+    console.clear();
     window.location.reload();
 } 
