@@ -13,7 +13,7 @@ var numRestr=2;
 var numVariaveis=2;
 let matrizPadrao = [];
 let matrizOperacao = [];
-let variaveisBasicas = [];
+let vetorBase = [];
 
 
 document.getElementById('numVariaveis').addEventListener('change', atualizaCampos);
@@ -152,10 +152,12 @@ let matrizRestricao =[]; //Coef. Variaveis - Resultado - Sinal (*numRestrições
 
 
 function validaCampos() {
+    event.preventDefault();
+
     const numVariaveis = parseInt(document.getElementById('numVariaveis').value);
     if (isNaN(numVariaveis) || numVariaveis < 2 || numVariaveis > 5) {
         alert('Número de variáveis deve ser um valor entre 2 e 5.');
-        return;
+        return false;
     }
 
     // Verifique se todos os campos da função objetivo estão preenchidos
@@ -163,7 +165,7 @@ function validaCampos() {
         const input = document.getElementById('funcObj' + i);
         if (!input.value) {
             alert('Preencha todos os campos da função objetivo.');
-            return;
+            return false;
         }
     }
 
@@ -173,7 +175,7 @@ function validaCampos() {
             const input = document.getElementById('restrVar' + i + j);
             if (!input.value) {
                 alert('Preencha todos os campos das restrições.');
-                return;
+                return false;
             }
         }
     }
@@ -183,12 +185,13 @@ function validaCampos() {
         const inputResultado = document.getElementById('restrResult' + i);
         if (!inputResultado.value) {
             alert('Preencha todos os campos dos resultados das restrições.');
-            return;
+            return false;
         }
     }
 
     // Se todos os campos estiverem preenchidos, chame a função salvaValor
     salvaValor();
+    return false;
 }
 
 
@@ -262,11 +265,37 @@ function salvaValor(){
         }
     }
 
-    if(resultadoSimplex===-1) console.log("Erro de Simplex");
-    else if(resultadoSimplex===2) console.log("Simplex impossível (sem solução)");
-    else if(resultadoSimplex===3) console.log("Solução ilimitada/infinita");
-    else if(resultadoSimplex===4) console.log("Múltiplas soluções");
-    else if(resultadoSimplex===1) console.log("Simplex com solução unica!");
+    const divResultado = document.createElement("div");
+    const span = document.createElement('h2');
+
+    if(resultadoSimplex===-1){
+        console.log("Erro de Simplex");
+        span.textContent = "Erro de Simplex";
+        divResultado.appendChild(span);
+    }
+    else if(resultadoSimplex===2){
+        console.log("Simplex impossível (sem solução)");
+        span.textContent = "Simplex impossível (sem solução)";
+        divResultado.appendChild(span);
+    }
+    else if(resultadoSimplex===3){
+        console.log("Solução ilimitada/infinita");
+        span.textContent = "Solução ilimitada/infinita";
+        divResultado.appendChild(span);
+    }
+    else if(resultadoSimplex===4){
+        console.log("Múltiplas soluções");
+        span.textContent = "Múltiplas soluções";
+        divResultado.appendChild(span);
+
+        const valorZ = document.createElement('p');
+        valorZ.textContent = "Z = " + resultado.toFixed(4);
+        divResultado.appendChild(valorZ);
+    }
+    else if(resultadoSimplex===1){
+        console.log("Simplex com solução unica!");
+        imprimeSimplex();
+    }
 
     pageScroll();
     flagScroll=0;
@@ -317,6 +346,7 @@ function criaMatrizFormaPadrao(){
             if(coluna==0){ //Coluna 0 - Valores das bases na f.obj.
                 if(matrizRestricao[linha-1][numVariaveis+1]==-1){ //Se a restrição for <=
                     matrizPadrao[linha][0]=matrizPadrao[0][numVariaveis+2*linha-1];
+                    vetorBase[linha]=numVariaveis+2*linha-1;
                 }
                 else matrizPadrao[linha][0]=matrizPadrao[0][numVariaveis+2*linha];
             }
@@ -461,6 +491,7 @@ function pivotamento(){
     
     //Mudança de base
     matrizOperacao[linhaPivo][0] = matrizOperacao[0][colunaPivo];
+    vetorBase[linhaPivo]=colunaPivo;
 
     //Calcula os novos CRs
     for(let coluna=1; coluna<numVariaveis+(numRestr*2)+1; coluna++){
@@ -513,8 +544,58 @@ function pivotamento(){
 
 //6. IMPRESSÃO DO SIMPLEX ======================================================================================================================
 
-function imrpimeSimplex(){
-    const divResultado = document.getElementById("resultadoSimplex");
+function imprimeSimplex(){
+    const divResultado = document.createElement("div");
+    let flagBase;
 
-    let resultado = matrizOperacao[numRestr+1][numVariaveis+(2*numRestr)]
+    let resultado = matrizPadrao[numRestr+1][numVariaveis+(2*numRestr)+1]
+    if(vetorObjetivo[0]===1) resultado*=-1; //Se a função for para max. -z=-resultado
+
+    //I. Resultado (Z)
+    console.log("\nResultado: z = " + resultado);
+
+    const span = document.createElement('h2');
+    span.textContent = "Solução Única";
+    divResultado.appendChild(span);
+
+    const valorZ = document.createElement('p');
+    valorZ.textContent = "Z = " + resultado.toFixed(4);
+    divResultado.appendChild(valorZ);
+
+    //II. Variaveis
+    console.log("Variaveis:");
+
+    //Verifica se a variável está na base
+    for(let i=1; i<=numVariaveis; i++){
+        const varFinal = document.createElement('p');
+        varFinal.className = "variavelFinal"
+        flagBase=0;
+        
+        for(let j=0; j<=numRestr; j++){
+            if(vetorBase[j]===i){
+                flagBase=1;
+                if(j===0){
+                    console.log("X" + i + " = " + (matrizPadrao[1][numVariaveis+(2*numRestr)+1]).toFixed(4));
+                    varFinal.textContent = "X" + i + " = " + (matrizPadrao[1][numVariaveis+(2*numRestr)+1]).toFixed(4);
+                    divResultado.appendChild(varFinal);
+                }
+                else{
+                    console.log("X" + i + " = " + (matrizPadrao[j][numVariaveis+(2*numRestr)+1]).toFixed(4));
+                    varFinal.textContent = "X" + i + " = " + (matrizPadrao[j][numVariaveis+(2*numRestr)+1]).toFixed(4);
+                    divResultado.appendChild(varFinal);
+                }
+
+            }
+        }
+
+        if(flagBase===0){
+            console.log("X" + i + " = 0");
+            varFinal.textContent = "X" + i + " = " + 0;
+            divResultado.appendChild(varFinal);
+        }
+    }
+
+    document.getElementById("resultadoSimplex").appendChild(divResultado);
+    document.getElementById("resultadoSimplex").hidden=false;
+   
 }
