@@ -1,11 +1,12 @@
 
 let flagScroll=0;
 function pageScroll() {
-    window.scrollBy(0,4);
+    window.scrollBy(0,-4);
     flagScroll++;
-    if(flagScroll<200) scrolldelay = setTimeout(pageScroll, 5);
+    if(flagScroll<20) scrolldelay = setTimeout(pageScroll, 5);
     return;
 }
+
 
 
 // 1. MUDANÇA NO NÚMERO DE VARIÁVEIS =======================================================================================
@@ -268,6 +269,7 @@ function salvaValor(){
     let resultado = matrizPadrao[numRestr+1][numVariaveis+(2*numRestr)+1];
     const divResultado = document.createElement("div");
     const span = document.createElement('h2');
+    const botao = document.createElement('button');
 
     if(resultadoSimplex===-1){
         console.log("Erro de Simplex");
@@ -299,7 +301,14 @@ function salvaValor(){
     }
 
     document.getElementById("resultadoSimplex").appendChild(divResultado);
+
+    botao.className = "botaoRefresh";
+    botao.append("Novo Simplex");
+    botao.setAttribute("onclick","refreshPage()");
+    document.getElementById("resultadoSimplex").appendChild(botao);
+
     document.getElementById("resultadoSimplex").hidden=false;
+
     pageScroll();
     flagScroll=0;
 }
@@ -602,3 +611,16 @@ function imprimeSimplex(){
     document.getElementById("resultadoSimplex").hidden=false;
    
 }
+
+
+function refreshPage(){
+    numRestr=2;
+    numVariaveis=2;
+    matrizPadrao.length=0;
+    matrizOperacao.length=0;
+    vetorBase.length=0;
+    vetorObjetivo.length=0; //Bool Min/Max - Coef. Variaveis - Resultado
+    matrizRestricao.length=0; //Coef. Variaveis - Resultado - Sinal (*numRestrições)
+    clear();
+    window.location.reload();
+} 
