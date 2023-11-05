@@ -263,6 +263,7 @@ function salvaValor(){
                 var str=array.join(' ');
                 console.log(str);
             }
+            console.log("\n");
         }
     }
 
@@ -435,7 +436,6 @@ function pivotamento(){
         Return 4 | Múltiplas soluções
     */
 
-    console.log("\nCalculando pivotamento...")
     let colunaResultado;
     let menorNegativo;
     let flagPositivo=0;
@@ -446,7 +446,6 @@ function pivotamento(){
 
 
      //Verifica o menor valor negativo da linha CUSTO REDUZIDO
-    console.log("\nVerificando CR...")
     menorNegativo=matrizPadrao[numRestr+1][1]
     for(let j=2; j<numVariaveis+(numRestr*2)+1; j++){
         if(matrizPadrao[numRestr+1][j]<menorNegativo){
@@ -478,11 +477,11 @@ function pivotamento(){
                     linhaPivo = i;
                 }
                 flagPositivo=1;
-                console.log("Valor do pivo = " + pivo);
             }
         }
     }
     console.log("Linha pivo = " + linhaPivo);
+    console.log("Valor do pivo = " + pivo + "\n");
 
     if(flagPositivo===0){ //Se todas as colunas resultarem em uma divisão negativa
         return 3; //CASO 3: SOLUÇÃO ILIMITADA
@@ -529,7 +528,6 @@ function pivotamento(){
     }
 
     //Verifica o menor valor negativo da linha CUSTO REDUZIDO
-    console.log("\nVerificando CR...")
     menorNegativo=matrizPadrao[numRestr+1][1]
     for(let j=2; j<numVariaveis+(numRestr*2)+1; j++){
         if(matrizPadrao[numRestr+1][j]<menorNegativo){

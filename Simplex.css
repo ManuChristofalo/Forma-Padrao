@@ -86,6 +86,17 @@ img{
     line-height: 5px;
 }
 
+.nota{
+    position:relative;
+    top: 75%;
+    width: 700px;
+    padding-left: 20%;
+    text-align: end;
+    font-style: italic;
+    font-size: small;
+    font-weight: 400;
+    line-height: 5px;
+}
 
 
 /* C O R P O   B A S E  ==================================================================================================== */
@@ -146,6 +157,10 @@ form input{
 
 /* C O R P O   B A S E  ==================================================================================================== */
 
+.coeficiente::-webkit-inner-spin-button, .resultado::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+  }
+
 .botaoCalcular{
     cursor: pointer;
     height: 1cm;
@@ -163,35 +178,94 @@ form input{
 
 
 .coeficiente{ /* --> Formatação do campo de inserção de todos os coeficientes */
-    width: 75px;
+    width: 70px;
+    margin-left: 5px;
+    margin-right: 5px;
     border: solid;
-    border-width: 1px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
     border-color: rgb(122, 122, 122);
-    background-color: white;
+    background-color: transparent;
+}
+
+.coeficiente:focus{
+    outline: none !important;
+    width: 70px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color:#ECC1A1;
+    background-color: transparent;
 }
 
 
 .numVariaveis{ /* --> Formatação da caixa de seleção do número de variáveis */
-    width: 100px;
+    padding-left: 10px;
+    margin-left: 10px;
+    width: 65px;
     border: solid;
-    border-width: 1px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
     border-color: rgb(97, 97, 97);
-    background-color: white;
+    background-color: transparent;
+}
+
+.numVariaveis::-webkit-inner-spin-button {
+    opacity: 1 !important;
 }
 
 
+.numVariaveis:focus{
+    outline: none !important;
+    border-color:#ECC1A1;
+}
+
 .CampoRestr{ /* --> Formatação para o campo de restrição crescer de acordo com o número de restrições */
     height: max-content !important;
+    padding-left: 20px;
 }
 
 
 .resultado{ /* --> Formatação do campo de inserção dos resultados das equações */
     margin-bottom: 20px;
-    width: 100px;
+    width: 90px;
+    margin-left: 10px;
+    margin-right: 5px;
     border: solid;
-    border-width: 1px;
-    border-color: rgb(97, 97, 97);
-    background-color: white;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color: rgb(122, 122, 122);
+    background-color: transparent;
+}
+
+.resultado:focus{
+    outline: none !important;
+    margin-bottom: 20px;
+    width: 90px;
+    margin-left: 10px;
+    margin-right: 5px;
+    border: solid;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-width: 2px;
+    border-radius: 0;
+    border-color: #ECC1A1;
+    background-color: transparent;
 }
 
 
@@ -201,11 +275,46 @@ form input{
     color: rgb(97, 97, 97);
 }
 
+.sinalEq{
+    margin-left: 5px;
+    border-top: 0;
+    border-left: 0;
+    border-bottom: 0;
+    border-width: 0;
+}
+
 
  .minMax{  /*-> Formatação da caixa de seleção maximizar ou minimizar  */
+    margin-left: 10px;
     margin-right: 20px;
+    border-top: 0;
+    border-left: 0;
+    border-bottom: 0;
+    border-right: 0;
+    font-weight: bold;
 } 
 
+.add, .rem{
+    border: solid;
+    border-width: 2px;
+    border-radius: 3px;
+    background-color: transparent;
+    border-color: rgb(97, 97, 97);
+    color:rgb(97, 97, 97);
+}
+
+.add:hover, .add:active{
+    border-width: 2px;
+    border-radius: 3px;
+    background-color: transparent;
+    color:green;
+    border-color: green;
+}
+
+.rem:hover, .rem:active{
+    color:firebrick;
+    border-color: firebrick;
+}
 
 .resultadoSimplex{ /* --> Formatação do resultado final */
     margin-bottom: 30px;
